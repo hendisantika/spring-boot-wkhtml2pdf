@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Paths;
 
 /**
  * Created by IntelliJ IDEA.
@@ -54,5 +57,39 @@ public class PdfDemo {
         }
 
         return baseUrl;
+    }
+
+    public static String generatePdfListForStudents() {
+        WkHtmlToPdf pdf = new WkHtmlToPdf("/usr/bin/wkhtmltopdf.sh");
+        //String types = StringUtils.join(studentList, ",");
+
+
+        try {
+            pdf.addSources(Source.fromUrl(getServerAbsolutePath(SERVER_REPORT_URL)));
+            System.out.println("Server absolute path: " + getServerAbsolutePath(SERVER_REPORT_URL));
+            System.out.println(Source.fromUrl(getServerAbsolutePath(SERVER_REPORT_URL)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String downloadPath = DOWNLOAD_FILE_PATH + ".pdf";
+
+        pdf.addArguments(
+                Argument.from(EnableJavascript));
+
+        System.out.println("PDF Location: " + downloadPath);
+        // Save the PDF
+        File file = new File(downloadPath);
+        System.out.println("Directory status: " + file.exists() + " " + file.isDirectory());
+
+        try {
+            System.out.println("Paths.get: " + Paths.get(downloadPath));
+
+            pdf.save(Paths.get(downloadPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return downloadPath;
     }
 }
