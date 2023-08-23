@@ -1,10 +1,13 @@
 package com.hendisantika.springbootwkhtml2pdf.controller;
 
+import com.hendisantika.springbootwkhtml2pdf.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
@@ -20,7 +23,10 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
+@RequiredArgsConstructor
 public class PdfController {
+
+    private final StudentService studentService;
 
     @GetMapping("/pdf")
     public ResponseEntity<InputStreamResource> generatePdf() throws IOException {
@@ -41,5 +47,12 @@ public class PdfController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(inputStreamResource);
+    }
+
+
+    @GetMapping(value = "/report/html")
+    public String getPdfReportForStudent(Model model) {
+        model.addAttribute("studentList", studentService.findAll());
+        return "sample2";
     }
 }
