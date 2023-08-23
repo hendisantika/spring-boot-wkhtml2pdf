@@ -92,4 +92,10 @@ public class PdfDemo {
         }
         return downloadPath;
     }
+
+    public static String getServerAbsolutePath(String requestPath) throws MalformedURLException {
+        String URL = getBaseURL() + requestPath;
+        //System.out.println(URL);
+        return URL;
+    }
 }
