@@ -1,7 +1,12 @@
 package com.hendisantika.springbootwkhtml2pdf.util;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.net.MalformedURLException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,4 +32,27 @@ public class PdfDemo {
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd-HH";
     @Value("${file.download.base}")
     private String DOWNLOAD_FOLDER;
+
+    public static String getBaseURL() throws MalformedURLException {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        String baseUrl = "";
+        if (request != null) {
+            // handle proxy forward
+            String scheme = request.getScheme();
+            if (request.getHeader("x-forwarded-proto") != null) {
+                scheme = request.getHeader("x-forwarded-proto");
+            }
+
+            Integer serverPort = request.getServerPort();
+            if ((serverPort == 80) || (serverPort == 443)) {
+                // No need to add the server port for standard HTTP and HTTPS ports, the scheme will help determine it.
+                baseUrl = String.format("%s://%s%s", scheme, request.getServerName(), request.getContextPath());
+            } else {
+                baseUrl = String.format("%s://%s:%d%s", scheme, request.getServerName(), serverPort, request.getContextPath());
+            }
+        }
+
+        return baseUrl;
+    }
 }
