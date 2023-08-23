@@ -1,8 +1,11 @@
 package com.hendisantika.springbootwkhtml2pdf.service;
 
+import com.hendisantika.springbootwkhtml2pdf.entity.Student;
 import com.hendisantika.springbootwkhtml2pdf.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,4 +22,8 @@ import org.springframework.stereotype.Service;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+
+    public List<Student> findAll() {
+        return studentRepository.findAll();
+    }
 }
