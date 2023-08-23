@@ -1,6 +1,8 @@
 package com.hendisantika.springbootwkhtml2pdf.controller;
 
+import com.hendisantika.springbootwkhtml2pdf.entity.Student;
 import com.hendisantika.springbootwkhtml2pdf.service.StudentService;
+import com.hendisantika.springbootwkhtml2pdf.util.PdfDemo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,6 +30,8 @@ import java.io.IOException;
 public class PdfController {
 
     private final StudentService studentService;
+
+    private final PdfDemo pdfDemo;
 
     @GetMapping("/pdf")
     public ResponseEntity<InputStreamResource> generatePdf() throws IOException {
@@ -54,5 +59,13 @@ public class PdfController {
     public String getPdfReportForStudent(Model model) {
         model.addAttribute("studentList", studentService.findAll());
         return "sample2";
+    }
+
+    @GetMapping("/test")
+    private String testPage(Model model) {
+        List<Student> studentList = studentService.findAll();
+        System.out.println(studentList);
+        model.addAttribute(studentList);
+        return "sample";
     }
 }
