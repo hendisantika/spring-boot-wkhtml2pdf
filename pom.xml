@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.infobip</groupId>
             <artifactId>infobip-api-java-client</artifactId>
-            <version>4.4.0</version>
+            <version>5.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
